@@ -1,0 +1,122 @@
+<mat-tab-group class="tabs" mat-stretch-tabs>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">attach_money</mat-icon>&nbsp;{{ "Account.ReceiveTab" | translate }}
+    </ng-template>
+
+    <div class="page centered">
+
+      <p class="mat-caption">{{ "Account.ReceiveNote" | translate }}</p>
+
+      <h2>{{ "Account.Receive" | translate }} {{ network.symbol }}</h2>
+
+      <img [src]="qrCode" class="qr-code" />
+
+      <mat-card class="address" [class.mat-elevation-z8]="true" dir="ltr">{{ address }}
+        <button class="copy-button" mat-icon-button (click)="copy()">
+          <mat-icon>content_copy</mat-icon>
+        </button>
+      </mat-card>
+
+      <p class="mat-caption network-info">{{ receiveAddressCaption }}</p>
+
+      <button class="purchase-button" color="primary" *ngIf="network.id === 'STRAX' || network.id === 'CRS' || network.id === 'BTC'" mat-stroked-button (click)="openSimplex(address, network)">{{ "Account.BuyWithSimplex" | translate }} {{ network.symbol }}</button>&nbsp;
+      <button class="purchase-button" color="primary" *ngIf="network.id === 'STRAX'" mat-stroked-button (click)="openExolix(address, network)">{{ "Account.ExchangeWithExolix" | translate }} {{ network.symbol }}</button>
+    </div>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">request_quote</mat-icon>&nbsp;{{ "Account.PaymentRequestTab" | translate }}
+    </ng-template>
+    <div class="page centered">
+      <h2>{{ "Account.CreatePaymentRequestFor" | translate }} {{ network.symbol }}</h2>
+
+      <form [formGroup]="form">
+        <!-- <div class="input-actions">
+          <button mat-icon-button (click)="scanQrCode()" matTooltip="Scan QR code">
+            <mat-icon>qr_code_scanner</mat-icon>
+          </button>
+          <button mat-icon-button (click)="paste()" matTooltip="Paste address from clipboard">
+            <mat-icon>content_paste</mat-icon>
+          </button>
+        </div> -->
+
+        <!-- web+pay://city:Ccoquhaae7u6ASqQ5BiYueASz8EavUXrKn?amount=10&label=Your Local Info&message=Invoice Number 5&data=MzExMzUzNDIzNDY&id=4324 -->
+
+        <mat-form-field class="input-full-width text-align-left" appearance="outline">
+          <mat-label>{{ "Account.Address" | translate }}</mat-label>
+          <input matInput formControlName="addressInput" [(ngModel)]="paymentAddress" />
+          <mat-error *ngIf="form.controls['addressInput'].errors?.['invalid']">{{ "Account.AddressInvalid" | translate }}</mat-error>
+          <mat-error *ngIf="form.controls['addressInput'].errors?.['required']">{{ "Account.AddressRequired" | translate }}</mat-error>
+        </mat-form-field>
+
+        <!-- <div class="available-balance" matTooltip="Click to fill out maximum (minus fee)" (click)="fillMax(sendService.accountHistory.balance)">Available: {{ sendService.accountHistory.balance || 0 | amount }}</div> -->
+
+        <mat-form-field class="input-full-width text-align-left" appearance="outline">
+          <mat-label>{{ "Account.Amount" | translate }}</mat-label>
+          <input matInput formControlName="amountInput" [(ngModel)]="amount" />
+          <mat-error *ngIf="form.controls['amountInput'].errors?.['min']">{{ "Account.AmountMin" | translate }}</mat-error>
+          <mat-error *ngIf="form.controls['amountInput'].errors?.['required']">{{ "Account.AmountRequired" | translate }}</mat-error>
+          <mat-error *ngIf="form.controls['amountInput'].errors?.['tooManyDecimals']">{{ "Account.AmountTooManyDecimals" | translate }}</mat-error>
+          <mat-error *ngIf="form.controls['amountInput'].errors?.['tooHighValue']">{{ "Account.AmountTooHighValue" | translate }}</mat-error>
+          <mat-error *ngIf="form.controls['amountInput'].errors?.['tooHighAmount']">{{ "Account.AmountTooHighAmount" | translate }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="input-full-width" appearance="outline">
+          <mat-label>{{ "Account.Label" | translate }}</mat-label>
+          <input matInput formControlName="labelInput" />
+          <mat-error *ngIf="form.controls['labelInput'].errors?.['maxlength']">Label can be maximum {{form.controls['labelInput'].errors?.['maxlength'].requiredLength}} characters.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="input-full-width" appearance="outline">
+          <mat-label>{{ "Account.Message" | translate }}</mat-label>
+          <input matInput formControlName="messageInput" />
+          <mat-error *ngIf="form.controls['messageInput'].errors?.['maxlength']">Message can be maximum {{form.controls['messageInput'].errors?.['maxlength'].requiredLength}} characters.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="input-full-width" appearance="outline">
+          <mat-label>{{ "Account.ID" | translate }}</mat-label>
+          <input matInput formControlName="identifierInput" />
+          <mat-error *ngIf="form.controls['identifierInput'].errors?.['maxlength']">ID can be maximum {{form.controls['identifierInput'].errors?.['maxlength'].requiredLength}} characters.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="input-full-width" appearance="outline">
+          <mat-label>{{ "Account.Data" | translate }}</mat-label>
+          <input matInput #data formControlName="dataInput" />
+          <mat-error *ngIf="form.controls['dataInput'].errors?.['maxbytes']">The data input cannot be larger than {{form.controls['dataInput'].errors?.['maxbytes'].requiredLength}} bytes of data, is now {{form.controls['dataInput'].errors?.['maxbytes'].actualLength}} bytes.</mat-error>
+          <mat-hint align="end">{{ bytesLength(data.value) }} / 80 {{ "Account.DataHint" | translate }}</mat-hint>
+        </mat-form-field>
+
+        <img [src]="qrPayment" class="qr-code" />
+
+        <mat-card class="address" [class.mat-elevation-z8]="true" dir="ltr">{{ paymentRequest }}
+          <button class="copy-button" mat-icon-button (click)="copyPayment()">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+        </mat-card>
+
+        <!-- <mat-form-field class="input-full-width" appearance="outline">
+          <mat-label>Fee</mat-label>
+          <input matInput formControlName="feeInput" [(ngModel)]="sendService.fee" required />
+          <mat-error *ngIf="form.controls['feeInput'].invalid">Fee is required and must be correctly entered.</mat-error>
+          <mat-hint *ngIf="sendService.feeError" align="start"
+            ><strong>{{ sendService.feeError }}</strong>
+          </mat-hint>
+          <mat-hint align="end">Minimum fee rate: {{ sendService.feeRate }} sat/byte</mat-hint>
+        </mat-form-field> -->
+
+        <!-- <div *ngIf="optionsOpen">
+          <mat-form-field class="input-full-width" appearance="outline">
+            <mat-label>Custom change address</mat-label>
+            <input matInput formControlName="changeAddressInput" [(ngModel)]="sendService.changeAddress" />
+          </mat-form-field>
+        </div> -->
+
+        <!-- <button class="full-width" (click)="toggleOptions()" mat-raised-button>Options...</button>
+        <br /><br />
+        <h3>Total: {{ sendService.total | amount }} {{ sendService.network.symbol }}</h3> -->
+      </form>
+    </div>
+  </mat-tab>
+</mat-tab-group>

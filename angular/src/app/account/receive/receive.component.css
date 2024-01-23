@@ -1,0 +1,13 @@
+.address {
+  overflow-wrap: break-word;
+}
+
+.network-info {
+  margin-top: 1.4em;
+  margin-bottom: 3em;
+}
+
+.qr-code {
+    border-radius: 5px;
+    margin-bottom: 1em;
+}

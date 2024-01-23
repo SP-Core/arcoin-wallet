@@ -1,0 +1,154 @@
+<div class="page centered">
+  <div *ngIf="step == 0">
+    <img class="logo" src="assets/icon-light-128x128.png" />
+
+    <h1>{{ uiState.manifest?.name }}</h1>
+
+    <!-- <p>{{ uiState.manifest?.description }}</p> -->
+    <p>{{ "Manifest.Description" | translate }}</p>
+
+    <br />
+    <button class="signup-button" mat-flat-button color="primary" (click)="create()">{{ "Wallet.CreateWallet" | translate }}</button>
+    <br />
+    <button class="signup-button" mat-flat-button (click)="restore()">{{ "Wallet.RecoverWallet" | translate }}</button>
+    <br /><br />
+    <br />
+    <!-- <div class="sub-title">{{ "App.Version" | translate }} {{ uiState.manifest?.version }}</div> -->
+
+    <div class="sub-title">{{ "Wallet.Disclaimer" | translate }}
+      <br><br>
+      <a href="https://www.blockcore.net/policy" target="_blank">{{ "Wallet.PrivacyPolicy" | translate }}</a>
+      <!-- <br /><br /><br />
+      <div>{{ "App.Version" | translate }} {{ uiState.manifest?.version }}</div> -->
+    </div>
+
+    <div *ngIf="uiState.showInstallButton" id="install" class="left">
+      <br /><br />
+      <mat-card>
+        <mat-card-header>
+          <mat-icon class="card-icon" mat-card-avatar>get_app</mat-icon>
+          <mat-card-title>{{ "Wallet.InstallApp" | translate }}</mat-card-title>
+          <mat-card-subtitle>{{ "Wallet.InstallAppSubtitle" | translate }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p *ngIf="!uiState.iOS">{{ "Wallet.InstallAppNotIOS" | translate }}</p>
+          <p *ngIf="uiState.iOS">{{ "Wallet.InstallAppIOS" | translate }}</p>
+        </mat-card-content>
+        <mat-card-actions *ngIf="!uiState.iOS" class="centered">
+          <button mat-flat-button color="primary" (click)="uiState.install()">{{ "Wallet.InstallApp" | translate }}</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+  <div *ngIf="step == 1">
+    <!-- <mat-stepper [linear]="true" #stepper>
+            <mat-step [stepControl]="firstFormGroup" [editable]="false"> -->
+    <form [formGroup]="firstFormGroup">
+
+      <h1 *ngIf="!recover">{{ "Wallet.CreateWallet" | translate }}</h1>
+
+      <h1 *ngIf="recover">{{ "Wallet.RecoverWallet" | translate }}</h1>
+
+      <p *ngIf="!recover">{{ "Wallet.CreateWalletDescription" | translate }}
+        <br />
+        <strong>{{ "Wallet.NeverShareIt" | translate }}</strong>
+      </p>
+
+      <p *ngIf="recover">{{ "Wallet.RecoverWalletDescription" | translate }}</p>
+      <p class="mat-caption"*ngIf="recover">{{ "Wallet.RecoverWalletNote" | translate }}</p>
+
+      <mat-card dir="ltr" *ngIf="!recover" class="recovery-phrase selectable" [class.mat-elevation-z8]="true">{{ mnemonic }}
+        <button class="copy-button" mat-icon-button (click)="copy()">
+          <mat-icon>content_copy</mat-icon>
+        </button>
+      </mat-card>
+
+      <mat-form-field *ngIf="recover" class="input-full-width" appearance="outline">
+        <mat-label>{{ "Wallet.SecretRecoveryPhrase" | translate }}</mat-label>
+        <textarea matInput [(ngModel)]="mnemonic" formControlName="firstCtrl" required></textarea>
+      </mat-form-field>
+
+      <br />
+
+      <button class="full-width" (click)="toggleOptions()" mat-raised-button>{{ "Wallet.Options" | translate }}...</button>
+      <br />
+
+      <div *ngIf="optionsOpen">
+        <mat-form-field class="input-full-width" appearance="outline">
+          <mat-label>{{ "Wallet.Language" | translate }}</mat-label>
+          <mat-select (selectionChange)="onLanguageChanged($event)" [(value)]="wordlist">
+            <mat-option *ngFor="let list of wordlists" [value]="list">{{ list | translate }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="input-full-width" appearance="outline">
+          <mat-label>{{ "Wallet.PersonalExtensionWords" | translate }}</mat-label>
+          <input matInput [(ngModel)]="extensionWords" formControlName="extensionWordsCtrl" />
+          <mat-hint>{{ "Wallet.YourPersonalExtensionWords" | translate }}</mat-hint>
+          <mat-hint align="end"><span class="material-icons hint-icon" matTooltip='{{ "Wallet.PersonalExtensionWordsTooltip" | translate }}'>info</span></mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <br />
+        <button *ngIf="!recover" class="signup-button" mat-flat-button color="primary" (click)="next(2)">{{ "Wallet.Confirm" | translate }}</button>
+        <button *ngIf="recover" class="signup-button" mat-flat-button color="primary" (click)="next(2)" [disabled]="!firstFormGroup.valid">{{ "Wallet.RecoverWallet" | translate }}</button>
+        <button class="signup-button" mat-stroked-button (click)="cancel()">{{ "App.Cancel" | translate }}</button>
+      </div>
+    </form>
+    <!-- </mat-step>
+            <mat-step [stepControl]="secondFormGroup" [editable]="false"> -->
+
+    <!-- </mat-step>
+            <mat-step [editable]="false"> -->
+
+    <!-- </mat-step>
+        </mat-stepper> -->
+  </div>
+
+  <div *ngIf="step == 2">
+    <form [formGroup]="secondFormGroup">
+      <h1>{{ "Wallet.CreatePassword" | translate }}</h1>
+
+      <p>{{ "Wallet.CreatePasswordDescription" | translate }}</p>
+
+      <mat-form-field class="input-full-width" appearance="outline">
+        <mat-label>{{ "Wallet.Password" | translate }}</mat-label>
+        <input matInput type="password" [(ngModel)]="password" formControlName="passwordCtrl" placeholder='{{ "Wallet.Password" | translate }}' required />
+      </mat-form-field>
+
+      <mat-form-field class="input-full-width" appearance="outline">
+        <mat-label>{{ "Wallet.ConfirmPassword" | translate }}</mat-label>
+        <input matInput type="password" [(ngModel)]="password2" formControlName="password2Ctrl" placeholder='{{ "Wallet.ConfirmPassword" | translate }}' required />
+      </mat-form-field>
+
+      <!-- <p><mat-slide-toggle color="primary" formControlName="biometricsCtrl"><span *ngIf="!uiState.iOS">Use Biometrics</span><span *ngIf="uiState.iOS">Use Face ID</span></mat-slide-toggle></p> -->
+
+      <div>
+        <button class="signup-button" (click)="save()" [disabled]="!passwordValidated" mat-flat-button color="primary">{{ "Wallet.Save" | translate }}</button>
+        <button class="signup-button" mat-stroked-button (click)="cancel()">{{ "Wallet.Cancel" | translate }}</button>
+      </div>
+
+      <p class="dimmed">{{ "Wallet.CreatePasswordMessage" | translate }}</p>
+    </form>
+  </div>
+
+  <div *ngIf="step == 3">
+    <h1>{{ "Wallet.AllDone" | translate }}</h1>
+    <p>{{ "Wallet.AllDoneDescription" | translate }}</p>
+    <br /><br />
+    <h2>{{ "Wallet.ProtectYourWallet" | translate }}</h2>
+    <p>{{ "Wallet.ProtectYourWalletP1" | translate }}</p>
+    <p>{{ "Wallet.ProtectYourWalletP2" | translate }}</p>
+    <p>
+      {{ "Wallet.ProtectYourWalletP3L1" | translate }}<br />
+      {{ "Wallet.ProtectYourWalletP3L2" | translate }}<br />
+    </p>
+    <a href="https://www.blockcore.net/policy" target="_blank">{{ "Wallet.PrivacyPolicy" | translate }}</a>
+    <div>
+      <br /><br /><br />
+      <button class="signup-button" mat-flat-button color="primary" routerLink="/">{{ "Wallet.GotIt" | translate }}</button>
+    </div>
+  </div>
+</div>

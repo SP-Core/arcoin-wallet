@@ -1,0 +1,23 @@
+<h2>Signing Verifiable Credential</h2>
+
+<!-- <p>IMPORTANT: Verify all details below before you accept the permission request.</p> -->
+
+<p>
+  Account: <strong>{{ walletManager.activeAccount?.name }}</strong
+  ><br />
+  Permission: <strong>"Sign data using your private key"</strong>
+  <br />
+  Domain: <strong>{{ uiState.action.app }}</strong>
+</p>
+
+<!-- Derivation path: {{networkService.getDerivationPathForAccount(walletManager.activeAccount)}}<br><br> -->
+
+You attest with your selected account to the following content:
+<br /><br />
+<mat-form-field class="input-full-width" appearance="outline">
+  <mat-label>{{ "Action.SigningContentLabel" | translate }}</mat-label>
+  <textarea class="signing-content" readonly="readonly" matInput [ngModel]="contentToSign"></textarea>
+</mat-form-field>
+
+<!-- <button class="signup-button" mat-flat-button color="primary" (click)="sign()">Sign and close</button>&nbsp;
+    <button class="signup-button" mat-flat-button (click)="exit()">Exit Action</button> -->

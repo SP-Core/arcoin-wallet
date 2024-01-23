@@ -1,0 +1,60 @@
+.account-balance {
+  float: right;
+  color: gray;
+}
+
+[dir=rtl]
+.account-balance {
+  float: left;
+  color: gray;
+}
+
+.dark-mode .account-balance {
+  float: right;
+  color: silver;
+}
+
+[dir=rtl]
+.dark-mode .account-balance {
+  float: left;
+  color: silver;
+}
+
+.account-scanning {
+  margin-right: 0.2em;
+}
+
+[dir=rtl]
+.account-scanning {
+  margin-left: 0.2em;
+}
+
+.network-status-widget {
+  position: absolute;
+  left: 3em;
+  top: 2.8em;
+  font-size: 0.8em !important;
+}
+
+[dir=rtl]
+.network-status-widget {
+  position: absolute;
+  right: 3em;
+  top: 2.8em;
+  font-size: 0.8em !important;
+}
+
+.nft-preview {
+  width: 100%;
+  max-width: 1024px;
+}
+
+.nft-view {
+  padding: 5em;
+}
+
+@media only screen and (max-width: 600px) {
+  .nft-view {
+    padding: 1em;
+  }
+}

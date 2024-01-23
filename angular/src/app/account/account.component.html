@@ -1,0 +1,252 @@
+<!-- <div class="page"
+    *ngIf="walletManager.activeAccount && (walletManager.activeAccount.network == 400 || walletManager.activeAccount.network == 401)">
+
+    <app-network-status-card class="balance-card" [status]="currentNetworkStatus"></app-network-status-card>
+
+    <div *ngIf="walletManager.activeAccount.network == 400 || walletManager.activeAccount.network == 401">
+        Cirrus is currently not supported. Check back later!
+    </div>
+</div> -->
+
+<div class="page" *ngIf="walletManager.activeAccount">
+  <!-- <app-network-status-card class="balance-card" [type]="networkType"></app-network-status-card> -->
+
+  <!-- <mat-card class="network-status-card" *ngIf="currentNetworkStatus && currentNetworkStatus.availability > 1">
+        <mat-card-subtitle>There are issues with the network</mat-card-subtitle>
+        <mat-card-title>
+            <app-network-status class="network-status-widget" [status]="currentNetworkStatus"></app-network-status>
+            {{getNetworkStatusLabel(currentNetworkStatus.availability)}}
+        </mat-card-title>
+        <mat-card-content>
+            {{currentNetworkStatus.status}}
+        </mat-card-content>
+    </mat-card> -->
+
+  <mat-card>
+    <!-- <mat-card-subtitle>{{uiState.activeAccount.name}}</mat-card-subtitle> -->
+    <mat-card-subtitle>{{ "Account.Balance" | translate }} <span *ngIf="accountHistory.unconfirmed"> ({{ accountHistory.unconfirmed || 0 | amount }} {{ "Account.Unconfirmed" | translate }}) </span></mat-card-subtitle
+    >
+    <mat-card-title
+      >{{ accountHistory.balance || 0 | amount }} {{ walletManager.activeAccount | network }}
+      <button class="rescan-button" matTooltip='{{ "Account.ReloadAccountHistory" | translate }}' mat-icon-button (click)="scan()">
+        <mat-icon>history</mat-icon>
+      </button>
+    </mat-card-title>
+    <!-- <mat-card-content>
+            <p>
+                Pending receive: <br>
+                Pending sending:
+            </p>
+        </mat-card-content> -->
+    <mat-divider inset></mat-divider>
+    <mat-card-actions class="full-action-buttons">
+      <button class="half-width" mat-raised-button [routerLink]="['/', 'account', 'receive', walletManager.activeAccount.index]" color="primary">{{ "Account.Receive" | translate }}</button>
+      <button [disabled]="accountHistory.balance == 0" class="half-width" [routerLink]="['/', 'account', 'send']" mat-raised-button>{{ "Account.Send" | translate }}</button>
+    </mat-card-actions>
+    <mat-card-footer>
+      <mat-progress-bar *ngIf="!accountState(walletManager.activeAccount)?.completedScan" mode="indeterminate"></mat-progress-bar>
+      <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+  </mat-card>
+
+  <mat-tab-group class="account-tabs">
+    <mat-tab *ngIf="walletManager.activeAccount.mode !== 'normal'">
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">calendar_today</mat-icon>
+      </ng-template>
+      <br />
+      <p>Account type "{{ walletManager.activeAccount.mode }}" does not support history.</p>
+    </mat-tab>
+
+    <mat-tab *ngIf="walletManager.activeAccount.mode === 'normal'">
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">calendar_today</mat-icon>
+      </ng-template>
+
+      <mat-nav-list>
+        <!-- <div mat-subheader>Recent Activity</div>
+                <a mat-list-item *ngFor="let activity of activities" routerLinkActive="active-link"
+                    [routerLink]="['/', 'account', 'view']">
+                    <mat-icon mat-list-icon>{{activity.icon}}</mat-icon>
+                    <div mat-line>{{activity.title}}</div>
+                    <div mat-line> {{activity.address}} </div>
+                </a> -->
+        <div mat-subheader>{{ "Account.Transactions" | translate }} ({{ history.length }})</div>
+
+        <div class="centered" *ngIf="history.length == 0">{{ "Account.YourWalletHasZeroTransactions" | translate }}<br /><br /></div>
+
+        <a mat-list-item *ngFor="let transaction of history" [routerLink]="['/', 'account', 'transaction', transaction.transactionHash]">
+          <div mat-line>
+            <span *ngIf="!transaction.unconfirmed" class="transaction-timpestamp">{{ transaction.timestamp * 1000 | date: "mediumDate" }}</span>
+
+            <mat-icon class="transaction-history-icon" *ngIf="transaction.isSidechain" title="Sidechain Transfer">swap_horiz</mat-icon>
+            <mat-icon class="transaction-history-icon" *ngIf="transaction.hasContract">gavel</mat-icon>
+            <mat-icon class="transaction-history-icon" *ngIf="transaction.entryType == 'mine'">shuffle </mat-icon>
+
+            <span class="positive-color" [ngClass]="{ unconfirmed: transaction.unconfirmed }" *ngIf="transaction.entryType == 'mine'">+{{ transaction.calculatedValue | amount }}</span>
+            <span class="positive-color" [ngClass]="{ unconfirmed: transaction.unconfirmed }" *ngIf="transaction.entryType == 'receive'">+{{ transaction.calculatedValue | amount }}</span>
+            <span class="negative-color" [ngClass]="{ unconfirmed: transaction.unconfirmed }" *ngIf="transaction.entryType == 'send'">-{{ transaction.calculatedValue | amount }}</span>
+            <span class="other-color" [ngClass]="{ unconfirmed: transaction.unconfirmed }" *ngIf="transaction.entryType == 'consolidated'">{{ transaction.entryType }}</span>
+            <!-- <span *ngIf="settings.values.developer"><br>Transacted total: {{transaction.value |
+                            amount}}</span> -->
+          </div>
+          <div mat-line class="address" *ngIf="transaction.hasContract">{{ "Account.InteractionWithContract" | translate }}</div>
+          <div mat-line class="address" [innerHTML]="transaction.calculatedAddress.split(';').join(', ')"></div>
+          <!-- <div *ngIf="currentNetworkStatus" mat-line class="address">Confirmations:
+                        {{currentNetworkStatus.blockSyncHeight - transaction.blockIndex}}
+                    </div> -->
+          <!-- <div mat-line> {{transaction.confirmations}} confirmations</div> -->
+        </a>
+        <!-- <div mat-subheader>Transactions (old)</div>
+                <a mat-list-item *ngFor="let transaction of transactions"
+                    [routerLink]="['/', 'account', 'transaction', transaction.transactionHash]">
+                    <div mat-line *ngIf="!transaction.description">
+                        <span class="positive-color" [ngClass]="{unconfirmed: transaction.confirmations == 0}"
+                            *ngIf="transaction.entryType == 'receive'">+{{transaction.calculatedValue | amount}}</span>
+                        <span class="negative-color" [ngClass]="{unconfirmed: transaction.confirmations == 0}"
+                            *ngIf="transaction.entryType == 'send'">-{{transaction.calculatedValue | amount}}</span>
+                    </div>
+                    <div mat-line class="other-color" *ngIf="transaction.description">
+                        {{transaction.description}}
+                    </div>
+                    <div mat-line class="address" [innerHTML]="transaction.calculatedAddress">
+                    </div>
+                    <div *ngIf="currentNetworkStatus" mat-line class="address">Confirmations:
+                        {{currentNetworkStatus.blockSyncHeight - transaction.blockIndex}}
+                    </div>
+                </a> -->
+      </mat-nav-list>
+    </mat-tab>
+
+    <mat-tab *ngIf="standardTokens != undefined">
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">account_balance</mat-icon>
+      </ng-template>
+
+      <br />
+
+      <ng-container *ngFor="let token of standardTokens">
+        <mat-card class="token-card">
+          <mat-card-title class="token-title">{{ token.name }}</mat-card-title>
+          <mat-card-subtitle class="token-subtitle">
+            <div class="token-subtitle-left">{{ "Account.Supply" | translate }}: {{ token.totalSupply | amount : token.decimals : false }}</div>
+            <div class="token-subtitle-right">{{ token.amount | amount : token.decimals : false}} {{ token.symbol }}</div>
+          </mat-card-subtitle>
+        </mat-card>
+      </ng-container>
+
+      <div class="label label-version">{{ "Account.StandardTokensNotice" | translate }}</div>
+
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">login_rounded </mat-icon>
+      </ng-template>
+
+      <br />
+
+      <mat-nav-list>
+        <!-- <a mat-list-item (click)="scan()">
+                    <mat-icon mat-list-icon>history</mat-icon>
+                    <div mat-line>Resync All History</div>
+                </a> -->
+        <a mat-list-item>
+          <mat-icon mat-list-icon>login_rounded</mat-icon>
+          <div mat-line>{{ "Account.Login" | translate }}</div>
+        </a>
+      </mat-nav-list>
+
+      <mat-card>
+        <!--  <img class="mat-card-avatar network-status-image" [src]="" />
+                <mat-card-title>Login method</mat-card-title>
+                <mat-card-subtitle></mat-card-subtitle> -->
+        <mat-card-content>
+          <p>{{ "Account.PasteTheLoginURL" | translate }}</p>
+          <p>
+            <mat-form-field class="input-full-width" appearance="outline">
+              <input matInput [(ngModel)]="loginurl" />
+            </mat-form-field>
+          </p>
+          <!-- <p><input [(ngModel)]="loginurl" type="text" ></p> -->
+          <p>
+            <button class="full-width" (click)="callLogin()" mat-raised-button color="primary">{{ "Account.Login" | translate }}</button>
+          </p>
+          <p style="color: red">
+            {{ loginurlMessage }}
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+    <mat-tab *ngIf="settings.values.developer">
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">bug_report</mat-icon>
+      </ng-template>
+
+      <br />
+      <p>{{ "Account.Transactions" | translate }}:</p>
+
+      <p>
+        {{ transactions | json }}
+      </p>
+    </mat-tab>
+
+    <mat-tab *ngIf="settings.values.developer">
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">bug_report</mat-icon>
+      </ng-template>
+
+      <br />
+      <p>{{ "Account.WalletsPersistedState" | translate }}:</p>
+
+      <p>{{ "Account.WalletsPersistedStateMessage" | translate }}</p>
+
+      <!-- <p>
+                {{uiState.persisted.wallets | json}}
+            </p> -->
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">build_circle</mat-icon>
+      </ng-template>
+
+      <br />
+
+      <mat-nav-list>
+        <a mat-list-item (click)="toggleNetwork()">
+          <mat-icon mat-list-icon>public</mat-icon>
+          <div mat-line>{{ "Account.NetworkStatus" | translate }}</div>
+        </a>
+      </mat-nav-list>
+
+      <mat-card *ngIf="networkStatus">
+        <img class="mat-card-avatar network-status-image" [src]="networkStatus.icon" />
+        <mat-card-title>{{ networkStatus.name }} ({{ networkStatus.symbol }})</mat-card-title>
+        <mat-card-subtitle>{{ networkStatus.description }}</mat-card-subtitle>
+        <mat-card-content>
+          <p>{{ "Account.Network" | translate }}: {{ networkStatus.node.blockchain.chain }}</p>
+          <p>{{ "Account.Height" | translate }}: {{ networkStatus.blockHeight }}</p>
+          <p>{{ "Account.RelayFee" | translate }}: {{ networkStatus.node.network.relayFee * 100000 }} {{ "Account.SatByte" | translate }}</p>
+          <p>{{ "Account.MemoryPool" | translate }}: {{ networkStatus.node.transactionsInPool }} {{ "Account.Transaction" | translate }}</p>
+          <p>{{ "Account.Connections" | translate }}: {{ networkStatus.node.network.connections }}</p>
+          <p>
+            <a dir="ltr" [href]="networkStatus.url" target="_blank">{{ networkStatus.url }}</a>
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+  </mat-tab-group>
+
+  <!-- {{this.uiState.activeAccount.state.receive | json}} -->
+
+  <!-- First address (for verification):<br>
+    <div *ngIf="address">
+        {{address}}
+    </div> -->
+</div>
+
+<div class="page centered" *ngIf="!walletManager.activeAccount">
+  <h3>No active account selected.</h3>
+</div>

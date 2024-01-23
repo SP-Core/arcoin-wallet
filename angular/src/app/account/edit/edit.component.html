@@ -1,0 +1,42 @@
+<div class="page centered">
+
+  <mat-form-field class="input-full-width" appearance="outline">
+    <mat-label>{{ "Account.AccountName" | translate }}</mat-label>
+    <input matInput [(ngModel)]="accountName" required>
+  </mat-form-field>
+
+  <mat-form-field class="input-full-width" appearance="outline" *ngIf="walletManager.activeAccount">
+    <mat-label>{{ "Account.Icon" | translate }}</mat-label>
+    <mat-select [(value)]="icon">
+      <mat-option *ngFor="let icon of icons.icons" [value]="icon">
+        <mat-icon [style.color]="color" [style.fill]="color">{{icon}}</mat-icon>
+      </mat-option>
+      <mat-select-trigger>
+        <mat-icon [style.color]="color" [style.fill]="color">{{icon}}</mat-icon>
+      </mat-select-trigger>
+    </mat-select>
+  </mat-form-field>
+
+  <div>
+    <input type="color" [(ngModel)]="color" id="head" name="head" />
+    <label for="head"> Icon color </label>
+  </div>
+
+  <br>
+  {{ "Account.Network" | translate }}: {{walletManager.activeAccount | network}}<br>
+  <!-- Purpose: {{walletManager.activeAccount?.purpose}}<br>
+  Network: {{walletManager.activeAccount?.network}}<br> -->
+  {{ "Account.Index" | translate }}: {{walletManager.activeAccount?.index}}<br>
+  {{ "Account.Purpose" | translate }}: {{walletManager.activeAccount?.purpose}}<br>
+  {{ "Account.AddressType" | translate }}: {{walletManager.activeAccount?.purposeAddress}}<br>
+
+  <br>
+  <button class="signup-button" mat-flat-button color="primary" (click)="save()">{{ "App.Save" | translate }}</button>
+  <br>
+  <button class="signup-button" mat-flat-button (click)="cancel()">{{ "App.Cancel" | translate }}</button>
+  <br>
+  <br>
+  <button class="signup-button" mat-flat-button color="warn"
+    [routerLink]="['/account', 'remove', walletManager.activeAccountId]">{{ "App.Remove" | translate }}</button>
+
+</div>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Blockcore Provider - Sample Web Page</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- <link rel="icon" type="image/x-icon" href="favicon.ico"> -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" /> -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <style>
+      #blockcore-extension-input {
+        width: 400px;
+        height: 200px;
+      }
+
+      #blockcore-extension-output {
+        border: 1px solid gray;
+        padding: 3em;
+        margin: 1em;
+        overflow-wrap: break-word;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Blockcore Provider - Sample Web Page</h1>
+
+    <textarea id="blockcore-extension-input">
+{
+        "id": "123",
+        "identity": "I am who I am."
+}</textarea
+    >
+    <br /><br />
+    <!-- <button class="blockcore-extension-button" purpose="login">Click to login with Blockcore</button>
+    <button class="blockcore-extension-button" purpose="sign">Click to sign with Blockcore</button>
+    <button class="blockcore-extension-button" purpose="identity">Click to give identity with Blockcore</button> -->
+
+    <br />
+    <!-- <button id="connectButton">Ask for Public Key</button>
+    <button id="connectButton2">Ask for Signing (Bytes)</button> -->
+    <button id="connectButton3">Ask for Signing (Message)</button>
+    <button id="connectButton5">Ask for Signing (Custom Key)</button>
+    <!-- <button id="connectButton4">Ask for Signing (Verifiable Credential)</button> -->
+
+    <br />
+    <div id="blockcore-extension-output"></div>
+
+    <!-- <button id="blockcore-extension-button" purpose="signing">Sign with Blockcore</button> -->
+
+    <!-- <button onclick="connect();">Click to sign</button> with Blockcore Wallet. -->
+
+    <script>
+      function connectRefactor() {
+        console.log("Attempting to connect with Blockcore Wallet...");
+
+        // console.log(window.blockcore2);
+
+        if (!window.blockcore) {
+          alert("The Blockcore Provider has not loaded.");
+        } else {
+          var provider = window.blockcore;
+
+          window.blockcore.open();
+
+          // Subscribe to accounts change
+          provider.on("accountsChanged", (accounts) => {
+            console.log(accounts);
+          });
+
+          // Subscribe to chainId change
+          provider.on("networkChanged", (chainId) => {
+            console.log(chainId);
+          });
+
+          // Subscribe to session disconnection
+          provider.on("disconnect", (code, reason) => {
+            console.log(code, reason);
+          });
+
+          // Open the UI:
+          // provider.open();
+
+          // console.log(provider);
+          // const accounts = provider.getAccounts();
+        }
+      }
+    </script>
+
+    <script>
+      async function connect() {
+        document.getElementById("blockcore-extension-output").innerText = "";
+
+        const blockcore = globalThis.blockcore;
+
+        if (!blockcore) {
+          alert("The Blockcore provider is not available. Unable to continue.");
+          return;
+        }
+
+        let pubKey;
+
+        try {
+          pubKey = await blockcore.request({ method: "publicKey" });
+        } catch (err) {
+          console.error(err);
+          pubKey = "Error: " + err.message;
+        }
+
+        console.log("BLOCKCORE REQUEST EXECUTED:", pubKey);
+
+        document.getElementById("blockcore-extension-output").innerText = pubKey;
+      }
+
+      async function connect2() {
+        document.getElementById("blockcore-extension-output").innerText = "";
+
+        const blockcore = globalThis.blockcore;
+
+        if (!blockcore) {
+          alert("The Blockcore provider is not available. Unable to continue.");
+          return;
+        }
+
+        let signature;
+
+        const msgParams = JSON.stringify({
+          types: {
+            EIP712Domain: [
+              { name: "name", type: "string" },
+              { name: "version", type: "string" },
+              { name: "chainId", type: "uint256" },
+              { name: "verifyingContract", type: "address" },
+            ],
+            // Not an EIP712Domain definition
+            Bid: [{ name: "name", type: "string" }],
+            // Refer to PrimaryType
+            Mail: [
+              { name: "from", type: "Person" },
+              { name: "to", type: "Person[]" },
+              { name: "contents", type: "string" },
+            ],
+            // Not an EIP712Domain definition
+            Person: [
+              { name: "name", type: "string" },
+              { name: "wallets", type: "address[]" },
+            ],
+          },
+        });
+
+        try {
+          signature = await blockcore.request({ method: "sign", params: [msgParams] });
+        } catch (err) {
+          console.error(err);
+          signature = "Error: " + err.message;
+        }
+
+        document.getElementById("blockcore-extension-output").innerText = signature;
+      }
+
+      async function connect3() {
+        document.getElementById("blockcore-extension-output").innerText = "";
+        const msg = document.getElementById("blockcore-extension-input").value;
+
+        const blockcore = globalThis.blockcore;
+
+        if (!blockcore) {
+          alert("The Blockcore provider is not available. Unable to continue.");
+          return;
+        }
+
+        let signature;
+
+        try {
+          signature = await blockcore.request({ method: "signMessage", params: [{ scheme: "schnorr", message: msg }] });
+        } catch (err) {
+          console.error(err);
+          signature = "Error: " + err.message;
+        }
+
+        document.getElementById("blockcore-extension-output").innerText = JSON.stringify(signature);
+      }
+
+      async function connect4() {
+        document.getElementById("blockcore-extension-output").innerText = "";
+
+        const blockcore = globalThis.blockcore;
+
+        if (!blockcore) {
+          alert("The Blockcore provider is not available. Unable to continue.");
+          return;
+        }
+
+        let signature;
+        const msgParams = "{ name: 'John Doe' }";
+        const signatureScheme = "schnorr";
+
+        try {
+          signature = await blockcore.request({ method: "signVerifiableCredential", params: [signatureScheme, msgParams] });
+        } catch (err) {
+          console.error(err);
+          signature = "Error: " + err.message;
+        }
+
+        document.getElementById("blockcore-extension-output").innerText = signature;
+      }
+
+      async function connect5() {
+        document.getElementById("blockcore-extension-output").innerText = "";
+        const msg = document.getElementById("blockcore-extension-input").value;
+
+        const blockcore = globalThis.blockcore;
+        let signature;
+
+        try {
+          signature = await blockcore.request({ method: "signMessage", params: [{ key: "CdnpNqSeqaXBMVnY1e13Ksijgr6FyWPM9J", scheme: "schnorr", message: msg }] });
+        } catch (err) {
+          console.error(err);
+          signature = "Error: " + err.message;
+        }
+
+        document.getElementById("blockcore-extension-output").innerText = JSON.stringify(signature);
+      }
+
+      (function () {
+        // Examples of wiring up click handler:
+        // document.getElementById("connectButton").onclick = connect;
+        // document.getElementById("connectButton").addEventListener("click", connect);
+        // document.getElementById("connectButton2").addEventListener("click", connect2);
+        document.getElementById("connectButton3").addEventListener("click", connect3);
+        // document.getElementById("connectButton4").addEventListener("click", connect4);
+        document.getElementById("connectButton5").addEventListener("click", connect5);
+      })();
+    </script>
+
+    <h1>Blockcore Payment</h1>
+
+    Payment using Protocol Handler (web+pay):<br><br>
+    <a href="web+pay://tcrs:tSXDbedw3o79gjijk29dZLNMtcYmymYtoX?amount=2&label=Your Local Info&message=Invoice Number 5&data=MzExMzUzNDIzNDY&id=4324">web+pay://tcrs:tSXDbedw3o79gjijk29dZLNMtcYmymYtoX?amount=2&label=Your Local Info&message=Invoice Number 5&data=MzExMzUzNDIzNDY&id=4324</a>
+    <br /><br />
+    <a href="web+pay://city:Ccoquhaae7u6ASqQ5BiYueASz8EavUXrKn?amount=10&label=Your Local Info&message=Invoice Number 5&data=MzExMzUzNDIzNDY&id=4324">web+pay://city:Ccoquhaae7u6ASqQ5BiYueASz8EavUXrKn?amount=10&label=Your Local Info&message=Invoice Number 5&data=MzExMzUzNDIzNDY&id=4324</a>
+    <br /><br />
+    <button id="paymentButton">Payment using Web Provider</button>
+
+    <script>
+      async function payment() {
+        try {
+          signature = await blockcore.request({
+            method: "payment",
+            params: [
+              {
+                network: "city",
+                amount: 10.5,
+                address: "Ccoquhaae7u6ASqQ5BiYueASz8EavUXrKn",
+                label: "Your Local Info",
+                message: "Invoice Number 5",
+                data: "MzExMzUzNDIzNDY",
+                id: "4324",
+              },
+            ],
+          });
+        } catch (err) {
+          console.error(err);
+          signature = "Error: " + err.message;
+        }
+
+        // PAYMENT REQUESTS CURRENTLY DOES NOT RETURN ANY FEEDBACK!
+        document.getElementById("blockcore-extension-output").innerText = JSON.stringify(signature);
+      }
+
+      (function () {
+        document.getElementById("paymentButton").addEventListener("click", payment);
+      })();
+    </script>
+  </body>
+</html>

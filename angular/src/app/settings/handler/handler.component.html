@@ -1,0 +1,37 @@
+<div class="page centered">
+  <mat-icon class="large-icon">search</mat-icon>
+  <br />
+  <h1>{{ 'Settings.RegisterProtocolHandler' | translate }}</h1>
+
+  <mat-card class="handlers">{{ 'Settings.RegisterProtocolHandlerDescription' | translate }}</mat-card>
+
+  <p class="handler-actions">{{ 'Settings.RegisterProtocolHandlerDescriptionP1' | translate }}</p>
+  <p class="handler-actions selectable">chrome://settings/content/handlers</p>
+  <p class="handler-actions">
+    {{ 'Settings.RegisterProtocolHandlerDescriptionP2' | translate }}<br>
+    <!-- TODO: Make this link work cross-browsers. -->
+  </p>
+
+  <p class="handler-actions">
+    <button *ngIf="feature.enabledGroup('handler:pay')" class="signup-button" mat-flat-button color="primary" (click)="registerHandler('web+pay', 'pay')">{{ 'Settings.PaymentRequest' | translate }}</button>
+  </p>
+
+  <!-- <br>
+    <button *ngIf="feature.enabledGroup('handler:sid')" class="signup-button" mat-flat-button color="primary"
+        (click)="registerHandler('web+sid', 'sid')">Stratis Identity (SID)</button>
+    <br>
+    <button *ngIf="feature.enabledGroup('handler:did')" class="signup-button" mat-flat-button color="primary"
+        (click)="registerHandler('did', 'did')">Decentralized Identity (DID)</button>
+    <br>
+    <button *ngIf="feature.enabledGroup('handler:nostr')" class="signup-button" mat-flat-button color="primary"
+        (click)="registerHandler('web+nostrid', 'nostr')">Nostr Identity</button>
+    <br>
+    <button *ngIf="feature.enabledGroup('handler:vault')" class="signup-button" mat-flat-button color="primary"
+        (click)="registerHandler('web+vault', 'vault')">Data
+        Vault
+        Handler</button>
+    <br>
+    <button *ngIf="feature.enabledGroup('handler:bitcoin')" class="signup-button" mat-flat-button color="primary"
+        (click)="registerHandler('bitcoin', 'btc')">Bitcoin
+        Handler</button> -->
+</div>

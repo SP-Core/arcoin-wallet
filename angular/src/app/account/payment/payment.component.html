@@ -1,0 +1,43 @@
+<div class="page">
+  <h1>{{ "Account.PaymentRequest" | translate }}: {{ uiState.payment.options.label }}</h1>
+  <!-- <div class="contact-line" *ngIf="contact.address">
+    Address: <strong>{{ contact.address }}</strong>
+    <button class="copy-button" mat-icon-button (click)="copy(contact.address)">
+      <mat-icon>content_copy</mat-icon>
+    </button>
+  </div>
+  <div class="contact-line">
+    Network: <strong>{{ network.name }} ({{ network.symbol }})</strong>
+  </div>
+  <div class="contact-line" *ngIf="contact.email">
+    Email: <strong>{{ contact.email }}</strong>
+    <button class="copy-button" mat-icon-button (click)="copy(contact.email)">
+      <mat-icon>content_copy</mat-icon>
+    </button>
+  </div> -->
+  <p class="selectable">
+    {{ "Account.Message" | translate }}: {{ uiState.payment.options.message }}<br />
+    <br />
+    {{ "Account.Network" | translate }}: {{ network.name }}<br />
+    {{ "Account.Address" | translate }}: {{ uiState.payment.address }}<br />
+    {{ "Account.Amount" | translate }}: {{ this.amount | amount }} {{ network.symbol }}<br />
+    <br />
+    {{ "Account.ID" | translate }}: {{ uiState.payment.options.id }}<br />
+    {{ "Account.Data" | translate }}: {{ uiState.payment.options.data }}
+  </p>
+
+  <mat-list *ngIf="filteredAccounts.length > 0">
+    <mat-list-item *ngFor="let account of filteredAccounts; let i = index" routerLinkActive="active-link">
+      <app-account-icon mat-list-icon [value]="account"></app-account-icon>
+      <div mat-line class="name-field">
+        <button class="half-width" (click)="sendToUsing(uiState.payment.address, account.identifier)" mat-raised-button>{{ "Account.SelectAccount" | translate }}</button>&nbsp;&nbsp;&nbsp;{{ account.name | truncate }}
+      </div>
+    </mat-list-item>
+  </mat-list>
+
+  <mat-card *ngIf="filteredAccounts.length == 0">{{ "Account.YouHaveNoAccountsFor" | translate }} {{ network.name }} ({{ network.symbol }}). </mat-card>
+
+  <br /><br />
+
+  <button *ngIf="uiState.isPaymentAction" class="signup-button" mat-flat-button color="warn" (click)="cancel(uiState.isPaymentAction)">{{ "Account.Cancel" | translate }}</button>
+</div>

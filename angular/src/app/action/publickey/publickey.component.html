@@ -1,0 +1,11 @@
+<h2>{{ "Action.PublicKey" | translate }}</h2>
+
+<!-- <p>IMPORTANT: Verify all details below before you accept the permission request.</p> -->
+
+<p>
+  {{ "Action.Account" | translate }}: <strong>{{ walletManager.activeAccount?.name }}</strong
+  ><br />
+  {{ "Action.Permission" | translate }}: <strong>"{{ "Action.ReadYourPublicKey" | translate }}"</strong>
+  <br />
+  {{ "Action.Domain" | translate }}: <strong>{{ uiState.action.app }}</strong>
+</p>

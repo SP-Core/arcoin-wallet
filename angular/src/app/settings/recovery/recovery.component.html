@@ -1,0 +1,31 @@
+<div class="page centered">
+    <!-- <h1 class="mat-h1" *ngIf="appState.handset">{{appState.appTitle$ | async}}</h1> -->
+
+    <mat-icon class="large-icon">warning</mat-icon>
+    <br>
+    <h1>{{ 'Settings.ShowSecretRecoveryPhrase' | translate }}</h1>
+    <br>
+    <h3>
+      {{ 'Settings.ShowSecretRecoveryPhraseDescription' | translate }}
+    </h3>
+
+    <p>{{ 'Settings.ShowSecretRecoveryPhraseDescriptionP1' | translate }}</p>
+
+    <mat-form-field appearance="outline" class="input-full-width" *ngIf="!mnemonic">
+        <mat-label>{{ 'Settings.VerifyPassword' | translate }}</mat-label>
+        <input matInput type="password" [(ngModel)]="password">
+    </mat-form-field>
+
+    <mat-card *ngIf="mnemonic" class="recovery-phrase" [class.mat-elevation-z8]="true">{{mnemonic}}
+        <button class="copy-button" mat-icon-button (click)="copy()">
+            <mat-icon>content_copy</mat-icon>
+        </button>
+    </mat-card>
+
+    <br>
+
+    <button class="signup-button" *ngIf="mnemonic" mat-flat-button color="primary" (click)="cancel()">{{ 'Settings.Close' | translate }}</button>
+    <button class="signup-button" *ngIf="!mnemonic" mat-flat-button (click)="cancel()">{{ 'Settings.Cancel' | translate }}</button>
+    <button class="signup-button" *ngIf="!mnemonic" mat-flat-button color="primary" (click)="show()">{{ 'Settings.Show' | translate }}</button>
+
+</div>

@@ -1,0 +1,44 @@
+<div class="page">
+  <h1>{{ "Exchange.PurchaseCrypto" | translate }}</h1>
+
+  <p>{{ "Exchange.PurchaseCryptoDescription" | translate }}</p>
+
+  <p>
+    <button class="purchase-button" color="primary" mat-raised-button (click)="purchase('', 'BTC')"><mat-icon>attach_money</mat-icon>&nbsp;{{ "Exchange.BuyBTC" | translate }}</button>
+  </p>
+  <p>
+    <button class="purchase-button" color="primary" mat-raised-button (click)="purchase('', 'STRAX')"><mat-icon>attach_money</mat-icon>&nbsp;{{ "Exchange.BuySTRAX" | translate }}</button>
+  </p>
+  <p>
+    <button class="purchase-button" color="primary" mat-raised-button (click)="purchase('', 'CRS')"><mat-icon>attach_money</mat-icon>&nbsp;{{ "Exchange.BuyCRS" | translate }}</button>
+  </p>
+
+  <br />
+  <h1>{{ "Exchange.ExchangeCrypto" | translate }}</h1>
+
+  <p>{{ "Exchange.ExchangeCryptoDescription" | translate }}</p>
+
+  <!-- <p>
+    <button class="purchase-button" color="primary" mat-raised-button (click)="buy('', 'STRAX')"><mat-icon>currency_bitcoin</mat-icon>&nbsp;{{ "Exchange.ExchangeBTCForSTRAX" | translate }}</button>
+  </p>
+
+  <p>
+    <button class="purchase-button" color="primary" mat-raised-button (click)="sell('', 'STRAX')"><mat-icon>currency_bitcoin</mat-icon>&nbsp;{{ "Exchange.ExchangeSTRAXForBTC" | translate }}</button>
+  </p> -->
+
+  <p>
+    <button class="purchase-button" color="primary" mat-raised-button (click)="buyChangeNOW('', 'STRAX')"><mat-icon>currency_bitcoin</mat-icon>&nbsp;{{ "Exchange.ExchangeBTCForSTRAXChangeNOW" | translate }}</button>
+  </p>
+
+  <p>
+    <button class="purchase-button" color="primary" mat-raised-button (click)="sellChangeNOW('', 'STRAX')"><mat-icon>currency_bitcoin</mat-icon>&nbsp;{{ "Exchange.ExchangeSTRAXForBTCChangeNOW" | translate }}</button>
+  </p>
+
+
+  <br />
+  <h2>{{ "Exchange.Partners" | translate }}</h2>
+  <p><a href="https://exolix.com?ref=BcG9dcJcQqLeXPf5" target="_blank">Exolix</a></p>
+  <!-- <p><a href="https://www.coinvault.io/simplex/?crypto=BTC&fiat=EUR&amount=200" target="_blank">Simplex</a></p> -->
+
+  <p class="mat-caption network-info">{{ "Exchange.PartnersDescription" | translate }}</p>
+</div>

@@ -1,0 +1,27 @@
+.network-type {
+  font-size: 1.4em;
+  margin-top: 1.6em;
+  display: block;
+}
+
+.network-line {
+  margin-bottom: 1em;
+  display: block !important;
+}
+
+.network-item {
+  display: block !important;
+}
+
+.log-output {
+  width: 100%;
+  min-height: 100px;
+  max-height: 300px;
+  overflow-wrap: break-word;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.log-output > div {
+  margin-top: 0.2em;
+}

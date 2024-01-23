@@ -1,0 +1,14 @@
+<div class="page centered">
+    <mat-icon class="large-icon">delete_forever</mat-icon>
+    <br>
+    <h1>{{ 'Wipe.WipeAllDataAndCache' | translate }}</h1>
+
+    <p>
+      {{ 'Wipe.WipeAllDataAndCacheDescription' | translate }}
+    </p>
+
+    <br>
+    <button class="signup-button" mat-flat-button (click)="cancel()">{{ 'Wipe.Cancel' | translate }}</button>
+    <br>
+    <button class="signup-button" mat-flat-button color="warn" (click)="wipe()">{{ 'Wipe.YesWipeData' | translate }}</button>
+</div>

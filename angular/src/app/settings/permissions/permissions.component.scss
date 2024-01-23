@@ -1,0 +1,35 @@
+.network-type {
+  font-size: 1.4em;
+  margin-top: 1.6em;
+  display: block;
+}
+
+.list-action {
+  float: right;
+  color: gray;
+}
+
+.list-action-table {
+  margin-left: 1em;
+  margin-right: 1em;
+  margin-top: 2em;
+}
+
+.list-action-row {
+  // display: flex;
+  // flex-direction: row;
+  // align-items: center;
+  // justify-content: space-between;
+  // align-content: center;
+  margin-bottom: 1em;
+}
+
+.list-action-row:nth-child(1) {
+  flex: 1 1 auto;
+  // flex-grow: 1;
+  // flex: 1;
+}
+
+.list-action-row:nth-child(2) {
+  flex: 48px;
+}

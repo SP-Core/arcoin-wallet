@@ -1,0 +1,24 @@
+<div class="page centered">
+    <h1>{{ "Settings.About" | translate }} {{env.instanceName}}</h1>
+
+    <p><img src="assets/icon-128x128.png"></p>
+
+    <p>{{ "Settings.Version" | translate }}: {{env.version}}<br>
+      {{ "Settings.By" | translate }} {{ uiState.manifest?.author }}</p>
+
+    <p>
+      {{ "Settings.WalletDescriptionP1" | translate }}
+    </p>
+    <p>
+      {{ "Settings.WalletDescriptionP2" | translate }}
+    </p>
+    <p>{{ "Settings.MadeWith" | translate }}</p>
+    <p><a [href]="env.instanceUrl" target="_blank">{{env.instanceUrl}}</a></p>
+
+    <p>&nbsp;</p>
+
+    <mat-card>
+        <p><em>{{ "Settings.AnarchyText" | translate }}</em></p>
+    </mat-card>
+
+</div>

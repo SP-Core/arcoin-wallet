@@ -1,0 +1,17 @@
+{
+    "js/ts.implicitProjectConfig.experimentalDecorators": true,
+    "html.format.wrapLineLength": 360,
+    "yaml.format.printWidth": 360,
+    "scssFormatter.printWidth": 360,
+    "editor.wordWrapColumn": 360,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    }
+}

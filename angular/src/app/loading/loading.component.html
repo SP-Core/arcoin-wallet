@@ -1,0 +1,19 @@
+<div class="page centered">
+  <img class="loader-logo" src="assets/icon-light-128x128.png">
+
+  <mat-spinner class="loader"></mat-spinner>
+
+  <div *ngIf="problems" class="tools">
+
+    <p class="problems-text">{{ "App.LoadingProblemText" | translate }}</p>
+
+    <button class="signup-button" mat-flat-button color="primary" (click)="reload()">{{ "App.ReloadExtension" | translate }}</button>
+  </div>
+
+  <!-- Unlocked wallets:<br>
+
+  <div *ngFor="let wallet of secure.unlockedWallets$ | async">
+    {{wallet}}
+  </div> -->
+
+</div>

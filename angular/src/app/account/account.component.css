@@ -1,0 +1,134 @@
+.address {
+  font-size: 0.9em !important;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+.logo {
+  height: 96px;
+  margin-bottom: 1em;
+}
+
+.mat-stepper-horizontal {
+  margin-top: 8px;
+}
+
+.mat-form-field {
+  margin-top: 16px;
+}
+
+textarea {
+  font-size: 1.2em;
+  word-spacing: 0.4em;
+  height: 100px;
+}
+
+.copy-button {
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+}
+
+.half-width {
+  padding: 0.3em 0.1em;
+}
+
+.full-action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.full-action-buttons > button {
+  /* width: 50%;
+  height: 100px; */
+  flex-grow: 2;
+}
+
+/* Overrides one of the built in styles to make both buttons align with the separator. */
+.mat-card-actions {
+  margin-left: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.account-tabs {
+  margin-top: 1em;
+}
+
+.unconfirmed {
+  font-style: italic !important;
+  /* TODO: Use variables from the theme */
+  color: gray !important;
+}
+
+.network-status-image {
+  background-size: cover;
+  float: left;
+  margin-right: 1em;
+}
+
+[dir=rtl]
+.network-status-image {
+  background-size: cover;
+  float: right;
+  margin-left: 1em;
+  margin-right: 0;
+}
+
+.transaction-timpestamp {
+  float: right;
+  font-size: 0.8em;
+}
+
+[dir=rtl]
+.transaction-timpestamp {
+  float: left;
+  font-size: 0.8em;
+}
+
+.transaction-history-icon {
+  margin-right: 6px;
+}
+
+.rescan-button {
+  float: right;
+  margin-top: -2em;
+}
+
+[dir=rtl]
+.rescan-button {
+  float: left;
+  margin-top: -2em;
+}
+
+.token-title {
+  font-size: 1.6em;
+}
+
+.token-subtitle {
+  /* text-align: right; */
+  padding-bottom: 0.1em;
+  font-size: 1.2em !important;
+  display: flex;
+}
+
+.token-subtitle-left {
+  display: inline-block;
+  flex-grow: 2;
+  color: rgba(173, 173, 173, 0.4);
+}
+
+.token-subtitle-right {
+  display: inline-block;
+  text-align: right;
+}
+
+.token-card {
+  margin-bottom: 0.1em;
+}
+
+.label-version {
+  margin-top: 1em;
+}

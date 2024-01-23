@@ -1,0 +1,280 @@
+<div class="page">
+
+  <mat-form-field class="input-full-width" appearance="outline">
+    <mat-label>{{ 'Settings.DisplayLanguage' | translate}}</mat-label>
+    <mat-select (selectionChange)="onLanguageChanged($event)" [(value)]="settings.language">
+      <mat-option *ngFor="let lang of translate.getLangs()" [value]="lang">
+        {{ lang | translate }}</mat-option>
+    </mat-select>
+    <mat-hint>{{ 'Settings.DisplayLanguageHint' | translate}}
+    </mat-hint>
+  </mat-form-field>
+
+  <br><br>
+
+  <mat-form-field class="input-full-width" appearance="outline">
+    <mat-label>{{ 'Settings.ChooseMode' | translate }}</mat-label>
+    <mat-select (selectionChange)="onThemeChanged($event)" [(value)]="settings.theme">
+      <mat-option [value]="'dark'">{{ 'Settings.Dark' | translate }}</mat-option>
+      <mat-option [value]="'light'">{{ 'Settings.Light' | translate }}</mat-option>
+    </mat-select>
+    <mat-hint>{{ 'Settings.ChooseModeHint' | translate }}
+    </mat-hint>
+  </mat-form-field>
+
+  <br><br>
+
+  <mat-form-field class="input-full-width" appearance="outline">
+    <mat-label>{{ 'Settings.AmountFormat' | translate }}</mat-label>
+    <mat-select [(value)]="settings.amountFormat">
+      <mat-option [value]="'bitcoin'">{{ 'Settings.Default' | translate }} (0.0)</mat-option>
+      <mat-option [value]="'satcommas'">{{ 'Settings.Satcommas' | translate }} (000,000.000,000)</mat-option>
+      <mat-option [value]="'sat'">{{ 'Settings.Satoshis' | translate }}</mat-option>
+    </mat-select>
+    <mat-hint>{{ 'Settings.AmountFormatHint' | translate}}
+    </mat-hint>
+  </mat-form-field>
+
+  <br><br>
+
+
+  <mat-form-field class="input-full-width" appearance="outline">
+    <mat-label>{{ 'Settings.AutoLockTimer' | translate }}</mat-label>
+    <input matInput [(ngModel)]="settings.autoTimeout" required>
+    <mat-hint>{{ 'Settings.AutoLockTimerHint' | translate }}</mat-hint>
+  </mat-form-field>
+
+  <br><br>
+
+  <mat-form-field class="input-full-width" appearance="outline">
+    <mat-label>{{ 'Settings.RequirePasswordForSending' | translate }}</mat-label>
+    <mat-select [(value)]="settings.requirePassword">
+      <mat-option [value]="true">{{ 'Settings.Yes' | translate }}</mat-option>
+      <mat-option [value]="false">{{ 'Settings.No' | translate }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <br><br>
+
+  <mat-form-field class="input-full-width" appearance="outline">
+    <mat-label>{{ 'Settings.Servers' | translate }}</mat-label>
+    <mat-select [(value)]="settings.server">
+      <!-- <mat-option [value]="'group3'">Community</mat-option> -->
+      <mat-option [value]="'custom'">{{ 'Settings.Custom' | translate }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div *ngIf="settings.server == 'custom'">
+    <br>
+
+    <mat-form-field class="input-full-width" appearance="outline">
+      <mat-label>{{ 'Settings.CustomServer' | translate }}</mat-label>
+      <input matInput [(ngModel)]="settings.indexer">
+      <mat-hint>{{ 'Settings.CustomServerHint' | translate }}</mat-hint>
+    </mat-form-field>
+  </div>
+
+  <!-- <br><br>
+
+  <mat-form-field class="input-full-width" appearance="outline">
+    <mat-label>Data Vault</mat-label>
+    <input matInput [(ngModel)]="settings.dataVault">
+    <mat-hint>Only change this if you want to connect your identities to an third party Blockcore Vault instance.
+    </mat-hint>
+  </mat-form-field> -->
+
+  <!-- <br><br>
+
+  <mat-form-field class="input-full-width" appearance="outline">
+    <mat-label>Developer mode</mat-label>
+    <mat-select [(value)]="settings.developer">
+      <mat-option [value]="false">Off</mat-option>
+      <mat-option [value]="true">On</mat-option>
+    </mat-select>
+    <mat-hint>Enable to view additional debug views.
+    </mat-hint>
+  </mat-form-field> -->
+
+  <br><br>
+
+  <button class="signup-button" mat-flat-button color="primary" (click)="save()">{{ 'Settings.Save' | translate
+    }}</button>
+
+  <br><br>
+  <mat-divider></mat-divider>
+  <br>
+
+  <mat-nav-list>
+    <div mat-subheader>{{ 'Settings.OtherActions' | translate }}</div>
+
+    <!-- TODO: Add this feature before showing in the UI. -->
+    <!-- <a mat-list-item routerLinkActive="active-link" [routerLink]="['trusted']">
+      <mat-icon mat-list-icon>public</mat-icon>
+      <div mat-line>Trusted Web Sites</div>
+    </a> -->
+
+    <a *ngIf="feature.enabledGroup('handler')" mat-list-item routerLinkActive="active-link" [routerLink]="['handler']">
+      <mat-icon mat-list-icon>search</mat-icon>
+      <div mat-line>{{ 'Settings.RegisterProtocolHandler' | translate }}</div>
+    </a>
+
+    <a mat-list-item routerLinkActive="active-link" [routerLink]="['network']">
+      <mat-icon mat-list-icon>travel_explore</mat-icon>
+      <div mat-line>{{ 'Settings.NetworkStatus' | translate }}</div>
+    </a>
+
+    <a mat-list-item [routerLink]="['permissions']">
+      <mat-icon mat-list-icon>vpn_lock</mat-icon>
+      <div mat-line>{{ 'Settings.Permissions' | translate }}</div>
+    </a>
+
+    <a mat-list-item routerLinkActive="active-link" [routerLink]="['password']">
+      <mat-icon mat-list-icon>password</mat-icon>
+      <div mat-line>{{ 'Settings.ChangePassword' | translate }}</div>
+    </a>
+
+    <!-- <a mat-list-item routerLinkActive="active-link" [routerLink]="['biometric']">
+      <mat-icon mat-list-icon>fingerprint</mat-icon>
+      <div mat-line>{{ 'Settings.Biometric' | translate }}</div>
+    </a> -->
+    <!-- TODO: Perhaps these should be on account level and not wallet level? Consider adding based upon user feedback. -->
+    <!-- <a mat-list-item routerLinkActive="active-link" [routerLink]="['export-public-key']">
+      <mat-icon mat-list-icon>key</mat-icon>
+      <div mat-line>Export Extended Public Key</div>
+    </a>
+
+    <a mat-list-item routerLinkActive="active-link" [routerLink]="['export-private-key']">
+      <mat-icon mat-list-icon>key</mat-icon>
+      <div mat-line>Export Private Key</div>
+    </a> -->
+
+    <a mat-list-item [routerLink]="['export-recovery-phrase']">
+      <mat-icon mat-list-icon>key</mat-icon>
+      <div mat-line>{{ 'Settings.ShowSecretRecoveryPhrase' | translate }}</div>
+    </a>
+
+    <a mat-list-item [routerLink]="['logs']">
+      <mat-icon mat-list-icon>feedback</mat-icon>
+      <div mat-line>{{ 'Settings.Logs' | translate }}</div>
+    </a>
+
+    <!-- <a mat-list-item [routerLink]="['/permissions']">
+      <mat-icon mat-list-icon>policy</mat-icon>
+      <div mat-line>Permissions</div>
+    </a>
+
+    <a mat-list-item [routerLink]="['/permissions']">
+      <mat-icon mat-list-icon>disabled_visible</mat-icon>
+      <div mat-line>Permissions</div>
+    </a>
+
+    <a mat-list-item [routerLink]="['/permissions']">
+      <mat-icon mat-list-icon>app_settings_alt</mat-icon>
+      <div mat-line>Permissions</div>
+    </a>
+
+    <a mat-list-item [routerLink]="['/permissions']">
+      <mat-icon mat-list-icon>construction</mat-icon>
+      <div mat-line>Permissions</div>
+    </a>
+
+    <a mat-list-item [routerLink]="['/permissions']">
+      <mat-icon mat-list-icon>public_off</mat-icon>
+      <div mat-line>Permissions</div>
+    </a>
+
+    <a mat-list-item [routerLink]="['/permissions']">
+      <mat-icon mat-list-icon>remove_moderator</mat-icon>
+      <div mat-line>Permissions</div>
+    </a>
+
+    <a mat-list-item [routerLink]="['/permissions']">
+      <mat-icon mat-list-icon>block</mat-icon>
+      <div mat-line>Permissions</div>
+    </a>
+
+    <a mat-list-item [routerLink]="['/permissions']">
+      <mat-icon mat-list-icon>vpn_key</mat-icon>
+      <div mat-line>Permissions</div>
+    </a>
+
+    <a mat-list-item [routerLink]="['/permissions']">
+      <mat-icon mat-list-icon>key</mat-icon>
+      <div mat-line>Permissions</div>
+    </a>
+
+    <a mat-list-item [routerLink]="['/permissions']">
+      <mat-icon mat-list-icon>handyman</mat-icon>
+      <div mat-line>Permissions</div>
+    </a>
+
+    <a mat-list-item [routerLink]="['/permissions']">
+      <mat-icon mat-list-icon>miscellaneous_services</mat-icon>
+      <div mat-line>Permissions</div>
+    </a>
+
+    <a mat-list-item [routerLink]="['/permissions']">
+      <mat-icon mat-list-icon>local_police</mat-icon>
+      <div mat-line>Permissions</div>
+    </a>
+
+    <a mat-list-item [routerLink]="['/permissions']">
+      <mat-icon mat-list-icon>playlist_remove</mat-icon>
+      <div mat-line>Permissions</div>
+    </a>
+
+    <a mat-list-item [routerLink]="['/permissions']">
+      <mat-icon mat-list-icon>beenhere</mat-icon>
+      <div mat-line>Permissions</div>
+    </a>
+
+    <a mat-list-item [routerLink]="['/permissions']">
+      <mat-icon mat-list-icon>security</mat-icon>
+      <div mat-line>Permissions</div>
+    </a> -->
+
+    <a mat-list-item [routerLink]="['/wipe']">
+      <mat-icon mat-list-icon>delete_forever</mat-icon>
+      <div mat-line>{{ 'Settings.WipeData' | translate }}</div>
+    </a>
+
+
+  </mat-nav-list>
+
+
+  <mat-nav-list>
+    <div mat-subheader>{{ 'Settings.Information' | translate }}</div>
+
+    <a mat-list-item [routerLink]="['about']">
+      <mat-icon mat-list-icon>new_releases</mat-icon>
+      <div mat-line>{{ 'Settings.About' | translate }}</div>
+    </a>
+
+    <a mat-list-item [href]="env.releaseUrl" target="_blank">
+      <mat-icon mat-list-icon>update</mat-icon>
+      <div mat-line>{{ 'Settings.Release' | translate }} {{env.version}}</div>
+    </a>
+
+    <a mat-list-item [routerLink]="['licenses']">
+      <mat-icon mat-list-icon>description</mat-icon>
+      <div mat-line>{{ 'Settings.ThirdPartyLicenses' | translate }}</div>
+    </a>
+
+    <a mat-list-item [routerLink]="['privacy']">
+      <mat-icon mat-list-icon>privacy_tip</mat-icon>
+      <div mat-line>{{ 'Settings.PrivacyPolicy' | translate }}</div>
+    </a>
+
+    <a mat-list-item [href]="env.instanceUrl" target="_blank" *ngIf="env.instanceName">
+      <mat-icon mat-list-icon>public</mat-icon>
+      <div mat-line>{{env.instanceName}} {{ 'Settings.Website' | translate }}</div>
+    </a>
+
+    <a mat-list-item [href]="env.sourceUrl" target="_blank">
+      <mat-icon mat-list-icon>code</mat-icon>
+      <div mat-line>{{ 'Settings.SourceCode' | translate }}</div>
+    </a>
+
+  </mat-nav-list>
+
+</div>

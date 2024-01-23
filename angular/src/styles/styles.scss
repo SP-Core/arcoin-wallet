@@ -1,0 +1,601 @@
+@import "@angular/material/theming";
+
+@include mat-core();
+
+@import "./theme.scss";
+
+@import "./custom-component-themes.scss";
+
+@include angular-material-theme($theming-material-components-theme);
+@include custom-components-theme($theming-material-components-theme);
+
+// @import "@fontsource/roboto/400";
+// @import "@fontsource/roboto/500";
+// @import "@fontsource/roboto/700"; // default "bold".
+
+@import "@fontsource/material-icons";
+// @import "@fontsource/material-icons-rounded";
+// @import "@fontsource/material-icons-outlined";
+// @import "@fontsource/material-icons-sharp";
+// @import "@fontsource/material-icons-two-tone";
+
+.dark-theme {
+  @include angular-material-color($dark-theme);
+  @include custom-components-theme($dark-theme);
+}
+
+// @import 'material-icons/iconfont/material-icons.css';
+
+// Override typography for all Angular Material, including mat-base-typography and all components.
+// @include angular-material-typography($typography);
+
+/* You can add global styles to this file, and also import other style files */
+
+.mat-buttonSuccess {
+  background-color: #ffff00;
+  color: #000;
+}
+
+// <button mat-raised-button color="buttonSuccess">Success</button>
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+* {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.rightToLeft > * {
+  direction: rtl;
+  unicode-bidi: embed;
+}
+
+[dir="rtl"] {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  }
+
+  .mat-list-base .mat-subheader,
+  .mat-tooltip,
+  .mat-typography,
+  .mat-card,
+  .mat-caption {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  }
+}
+
+body {
+  font-size: 16px;
+  background-color: #212121;
+  color: white;
+  overscroll-behavior-y: contain;
+  // scrollbar-gutter: stable both-edges;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  select,
+  textarea,
+  input {
+    font-size: 16px !important;
+  }
+}
+
+.mat-tab-body-content {
+  // scrollbar-gutter: stable both-edges;
+  // overflow: overlay !important;
+}
+
+.mat-sidenav-content {
+  overflow: overlay !important;
+}
+
+/* Probably not needed? */
+// mat-tab-group {
+//   height: 100%;
+// }
+
+.sidenav-container {
+  // overflow: auto overlay;
+  height: 100%;
+  overflow: hidden !important;
+}
+
+.sidenav-left {
+}
+
+.sidenav-right {
+  min-width: 200px;
+}
+
+.unselectable {
+  user-select: none;
+}
+
+.install {
+  display: none;
+}
+
+@media (display-mode: browser) {
+  .install {
+    display: block;
+  }
+}
+
+// .mat-drawer-content {
+//     overflow: hidden !important;
+// }
+
+app-root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  margin: 16px 0;
+  padding: 0 16px;
+}
+
+// .scrollable-tab-content {
+//     overflow: overlay;
+//     height: calc(100vh - 105px); /* This is calculation of toolbar + tab. Attempt to refactor this in the future. */
+// }
+
+a {
+  color: black;
+}
+
+.dark-theme a {
+  color: white;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.popup-mode {
+  width: 400px;
+  height: 565px;
+}
+
+.full-mode {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.full-mode .maximize {
+  display: none;
+  visibility: hidden;
+}
+
+.maximize {
+  position: fixed;
+  bottom: 0px;
+  right: 7px;
+  z-index: 10000;
+  cursor: pointer;
+}
+
+[dir="rtl"] {
+  .maximize {
+    position: fixed;
+    bottom: 0px;
+    left: 7px;
+    right: auto;
+    z-index: 10000;
+    cursor: pointer;
+  }
+}
+
+header {
+  display: flex;
+  padding: 2em;
+}
+
+.header-text {
+  font-size: 1.2em;
+  margin-left: 1em;
+}
+
+.page {
+  padding: 2em;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.page-small-top {
+  padding: 0 2em 2em 2em;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Ensures we don't get sideways scrolling right above 600px width */
+.mat-tab-label {
+  min-width: 72px !important;
+}
+
+.input-full-width {
+  width: 100%;
+}
+
+.full-width {
+  width: 100% !important;
+}
+
+.loader-logo {
+  margin-top: 3em;
+}
+
+.loader {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 3em;
+}
+
+.wrap {
+  overflow-wrap: break-word;
+}
+
+.unwrap {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hint-icon {
+  font-size: 1em !important;
+  cursor: pointer;
+}
+
+.centered {
+  text-align: center;
+}
+
+.left {
+  text-align: left;
+}
+
+.card-icon {
+  font-size: 3em;
+}
+
+.card-icon {
+  font-size: 3em;
+}
+
+.no-bottom-margin {
+  margin-bottom: 0 !important;
+}
+
+textarea,
+input,
+button,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.wide-button {
+  width: 100%;
+}
+
+.margin-button {
+  margin-bottom: 1em !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d6dee1be;
+  // border-radius: 20px;
+  border-left: 6px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbfc5;
+}
+
+.dark-theme ::-webkit-scrollbar-thumb {
+  background-color: #595b5ca4;
+  // border-radius: 20px;
+  border-left: 6px solid transparent;
+  background-clip: content-box;
+}
+
+.dark-theme ::-webkit-scrollbar-thumb:hover {
+  background-color: #a3a5a7c2;
+}
+
+.network-status {
+  font-size: 0.6em;
+}
+.network-status-syncing {
+  color: orange;
+}
+.network-status-online {
+  color: #22a848;
+}
+.network-status-error {
+  color: #a83222;
+}
+.network-status-offline {
+  color: #a83222;
+}
+.network-status-unknown {
+  color: gray;
+}
+
+.icon-warn {
+  color: orange;
+}
+
+.icon-success {
+  color: #22a848;
+}
+
+.positive-color {
+  color: #24c276;
+}
+
+.dark-theme .positive-color {
+  color: #69f0ae;
+}
+
+.negative-color {
+  color: #f44336;
+}
+
+.other-color {
+  color: #da9d1a;
+}
+
+.label {
+  // color: mat-color($text-primary, 1);
+  color: gray;
+}
+
+.dark-theme .label {
+  color: silver;
+}
+
+.break {
+  overflow-wrap: break-word;
+}
+
+.grid-row-label-value {
+  display: grid;
+  // grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: 1fr;
+  //gap: 0.25em 1.2em;
+  gap: 1em;
+}
+
+.grid-row-label-value div span:nth-child(1)::after {
+  content: ":";
+}
+
+.grid-row-label-value div span:nth-child(2) {
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+.grid-row-label-value div span {
+  display: block;
+}
+
+.grid-label-value {
+  display: grid;
+  // grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 20% 80%;
+  //gap: 0.25em 1.2em;
+  gap: 0.25em 0em;
+}
+
+.grid-label-value div {
+  display: contents;
+}
+
+.grid-label-value div span:nth-child(1) {
+  color: var(--foreground-alternative);
+  text-align: right;
+}
+
+.grid-label-value div span:nth-child(1)::after {
+  content: ":";
+}
+
+.grid-label-value div span:nth-child(2) {
+  text-align: right;
+}
+
+.grid-label-value ul {
+  margin: 0;
+}
+
+.grid-label-value-label {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.25em 1.2em 1.2em;
+}
+
+.grid-label-value-label div {
+  display: contents;
+}
+
+.grid-label-value-label div span:nth-child(1) {
+  color: var(--foreground-alternative);
+  text-align: right;
+}
+
+.grid-label-value-label div span:nth-child(1)::after {
+  content: ":";
+}
+
+.grid-label-value-label div span:nth-child(2) {
+  text-align: right;
+}
+
+.grid-label-value-label div span:nth-child(3) {
+  text-align: left;
+  margin-left: 1em;
+}
+
+.grid-label-value-label ul {
+  margin: 0;
+}
+
+.sub-title {
+  font-size: 0.9em;
+  margin-top: -1.4em;
+  padding-bottom: 2em;
+  // margin-bottom: 3em;
+}
+
+// .stretched-tabs {
+//     max-width: 800px;
+//     width: 100%;
+// }
+
+.tabs {
+  height: 100%;
+}
+
+// ::ng-deep .mat-tab-header-pagination {
+//     display: none !important;
+// }
+
+// ::ng-deep .mat-tab-header {
+//     overflow-x: scroll !important;
+// }
+
+// ::ng-deep .mat-tab-label-container {
+//     overflow: visible !important;
+// }
+
+// ::ng-deep .mat-tab-header::-webkit-scrollbar {
+//     display: none;
+// }
+
+.signup-button {
+  width: 100%;
+  margin-bottom: 0.5em !important;
+}
+
+.action-button {
+  margin-bottom: 0.5em !important;
+}
+
+.large-icon {
+  width: 64px !important;
+  height: 64px !important;
+  font-size: 4em;
+  // font-size: 4em;
+  // margin-left: -0.5em;
+  // height: 32px;
+}
+
+.recovery-phrase {
+  font-size: 1.2em;
+  word-spacing: 0.4em;
+  padding: 1em;
+}
+
+.right {
+  float: right;
+}
+
+.dimmed {
+  color: gray;
+  // color: rgba(0, 0, 0, 0.87);
+}
+
+.dark-mode .dimmed {
+  color: silver;
+  // color: rgba(0, 0, 0, 0.87);
+}
+
+*,
+*::after,
+*::before {
+  -webkit-app-region: no-drag;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+textarea,
+input {
+  -webkit-touch-callout: default;
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+.selectable {
+  -webkit-touch-callout: default;
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: black;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.dark-theme input:-webkit-autofill,
+.dark-theme input:-webkit-autofill:hover,
+.dark-theme input:-webkit-autofill:focus,
+.dark-theme input:-webkit-autofill:active {
+  -webkit-text-fill-color: white;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.dark-theme .logo {
+  filter: invert(1%);
+}
+
+.logo {
+  filter: invert(100%);
+}
+
+.mat-form-field {
+  line-height: 1.35 !important;
+}
+
+.purchase-button {
+  width: 100%;
+  margin-top: 1.4em;
+}

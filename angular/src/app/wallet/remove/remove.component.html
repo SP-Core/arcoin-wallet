@@ -1,0 +1,15 @@
+<div class="page centered" *ngIf="walletManager.activeWallet">
+
+  <mat-icon class="large-icon">delete</mat-icon>
+  <br>
+  <h1>{{ "Wallet.DeleteYourWallet" | translate }}</h1>
+
+  <p>
+    {{ DeleteYourWalletMessage }}
+  </p>
+
+  <br>
+  <button class="signup-button" mat-flat-button (click)="cancel()">{{ "Wallet.Cancel" | translate }}</button>
+  <br>
+  <button class="signup-button" mat-flat-button color="warn" (click)="wipe()">{{ "Wallet.YesWipeMyWallet" | translate }}</button>
+</div>
